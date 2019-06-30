@@ -1,0 +1,60 @@
+
+// 配置一次性地应用于所有的Project
+//configure(allprojects.findAll { it.name.startsWith('sub') }) {}
+// 如何使用Gradle创建如maven那样的项目结构呢 ？
+
+configure(globalSetting) { project ->
+    group = "${groupName}"
+    version = "${version}"
+
+    // Global settting Directory use
+    ext.set("quicksand_sdk_home",System.getenv().get("QUICKSAND_SDK_HOME"));
+    // Repostiroy Config Dirct
+    ext.set("repo_user",System.getenv().get("REPOSITORY_USER"));
+    ext.set("repo_password",System.getenv().get("REPOSITORY_PASSWORD"));
+    ext.set("repo_local",System.getenv().get("REPOSITORY_LOCAL"));
+    // ext.set("repository_lib",System.getenv().get("REPOSITORY_LIB"));
+    ext.gradleScriptDir   = "${quicksand_sdk_home}/gradle"
+
+    // import other plugins
+    apply from: "${gradleScriptDir}/dependency-management.gradle"
+    apply from: "${gradleScriptDir}/sniffer.gradle"
+    apply from: "${gradleScriptDir}/allprojects.gradle"
+
+}
+
+apply from: System.getenv().get("QUICKSAND_SDK_HOME")+"/gradle/subproject.gradle"
+
+configure(rootProject) {
+    description = "Gradle Global Setting"
+
+    apply plugin: "groovy"
+    // apply plugin: "detect-split-packages"
+    apply from: "${gradleScriptDir}/jdiff.gradle"
+    apply from: "${gradleScriptDir}/docs.gradle"
+    apply from: "${gradleScriptDir}/wapper.gradle"
+
+    configurations.archives.artifacts.clear()
+
+    artifacts {
+        archives docsZip
+        archives distZip
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

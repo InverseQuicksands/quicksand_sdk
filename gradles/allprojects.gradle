@@ -1,0 +1,41 @@
+apply plugin: 'propdeps'
+apply plugin: 'propdeps-maven'
+apply plugin: 'propdeps-eclipse'
+apply plugin: 'propdeps-idea'
+apply plugin: "java"
+apply plugin: "eclipse"
+apply plugin: "idea"
+apply plugin: 'org.springframework.boot'
+
+repositories {
+    maven { url "${repo_local}" }
+}
+
+compileJava {
+    sourceCompatibility=1.8
+    targetCompatibility=1.8
+}
+
+compileTestJava {
+    sourceCompatibility=1.8
+    targetCompatibility=1.8
+}
+
+[compileJava, compileTestJava]*.options*.encoding="UTF-8"
+sourceSets.main.java.srcDirs = "src/java"
+sourceSets.main.resources.srcDirs = "src/resources"
+//sourceSets.test.resources.srcDirs = ["src/test/resources", "src/test/java"]
+
+
+
+
+
+
+
+
+
+
+
+
+
+

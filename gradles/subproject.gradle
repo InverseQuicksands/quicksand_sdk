@@ -1,0 +1,99 @@
+import java.text.SimpleDateFormat;
+
+configure(subprojects) { subproject ->
+    apply from: "${quicksand_sdk_home}/gradle/publish-maven.gradle"
+    configurations {
+        jacoco
+    }
+    dependencies {
+        jacoco("org.jacoco:org.jacoco.agent:0.7.5.201505241946:runtime")
+    }
+
+    gradle.taskGraph.whenReady {taskGraph ->
+        if (taskGraph.hasTask(':sonarqube')) {
+            test.jvmArgs "-javaagent:${configurations.jacoco.asPath}=destfile=${buildDir}/jacoco.exec,includes=org.quicksand.*"
+        }
+    }
+
+    jar {
+        doFirst {
+            def manifestFile = file("src/main/resources/version.properties")
+            Properties versionFile = new Properties()
+            if (versionFile.exists()) {
+                manifestFile.withInputStream { stream->
+                    versionFile.load(stream)
+                }
+                manifestFile.delete();
+            }else{
+                versionFile.put("build.number","0")
+            }
+            def date=new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
+            def buildNumber = versionFile.get("build.number")
+            def nextbuildNumber = Integer.parseInt(buildNumber)+ 1
+            versionFile.put("build.number",String.valueOf(nextbuildNumber))
+            versionFile.put("build.version", subproject.version)
+            versionFile.put("system.timestamp",String.valueOf(System.currentTimeMillis()))
+            versionFile.put("build.timestamp",date)
+            versionFile.put("build.timestamp.format", "yyyyMMddHHmmssSSS")
+            versionFile.put("module.name", subproject.name)
+
+            if (!manifestFile.exists()){
+                manifestFile.getParentFile().mkdirs()
+                manifestFile.createNewFile()
+            }
+            versionFile.store(new FileOutputStream(manifestFile),"Inverse Quicksand Platform Build Tools Versioned File");
+        }
+
+        // MANIFEST.MF文件的写入操作
+        // Manifest-Version: 用来定义manifest文件的版本
+        manifest.attributes["Manifest-Version"] = "1.0"
+        // Created-By: 声明该文件的生成者，一般该属性是由jar命令行工具生成的
+        manifest.attributes["Created-By"] = "${System.getProperty("gradle.version")}"
+        // Implementation-Title: 定义了扩展实现的标题
+        manifest.attributes["Implementation-Title"] = subproject.name
+        // Implementation-Version: 定义扩展实现的版本
+        manifest.attributes["Implementation-Version"] = subproject.version
+        // Implementation-Vendor: 定义扩展实现的组织
+        manifest.attributes["Implementation-Vendor"] = "Inverse Quicksand"
+        // Implementation-Vendor-Id: 定义扩展实现的组织的标识
+        manifest.attributes["Implementation-Vendor-Id"] = "Inverse Quicksand"
+        // Implementation-URL:   定义该扩展包的下载地址(URL)
+        manifest.attributes["Implementation-URL"] = "https://github.com/InverseQuicksands"
+
+        from("${rootProject.projectDir}/src/dist") {
+            into "META-INF"
+            expand(copyright: new Date().format("yyyy"), version: project.version)
+        }
+    }
+
+    javadoc {
+        description = "Generates project-level javadoc for use in -javadoc jar"
+        options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
+        options.author = true
+        options.header = project.name
+        // options.links(project.ext.javadocLinks)
+        options.encoding="UTF-8"
+        options.addStringOption('Xdoclint:none', '-quiet')
+        logging.captureStandardError LogLevel.INFO
+        logging.captureStandardOutput LogLevel.INFO
+    }
+
+    // 打包源代码，为了方便查看源码及调试，把源码也上传到nexus仓库中
+    task sourcesJar(type: Jar, dependsOn:classes) {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        classifier = "sources"
+        from sourceSets.main.allJava.srcDirs
+        include "**/*.java"
+    }
+
+    // 打javadoc包，为了方便查看注释，需要把javadoc也上传到nexus仓库中
+    task javadocJar(type: Jar) {
+        classifier = "javadoc"
+        from javadoc
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+}
