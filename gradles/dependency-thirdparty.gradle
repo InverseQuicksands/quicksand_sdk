@@ -1,0 +1,384 @@
+apply plugin: "io.spring.dependency-management"
+
+def thirdparyProp = file("${quicksand_sdk_home}/dependencies/thirdpary.properties")
+
+Properties p = new Properties()
+
+thirdparyProp.withInputStream { stream->
+    p.load(stream)
+}
+p.keySet().forEach{ it->
+    ext.set(it, p.getProperty(it))
+};
+
+dependencyManagement {
+    dependencies {
+
+/***************************************** thirdpay library ************************************************************/
+        //google guava lib
+        dependency "com.google.guava:guava:${guavaVersion}"
+        dependency "org.xerial.snappy:snappy-java:${snappyJavaVersion}"
+        dependency "org.reflections:reflections:${reflectionsVersion}"
+        dependency "com.coreos:jetcd-core:${jetcdVersion}"
+        dependency "com.jcraft:jsch:${jschVersion}"
+        //slf4j
+        dependency "org.slf4j:slf4j-api:${slf4jVersion}"
+        dependency "org.slf4j:log4j-over-slf4j:${slf4jVersion}"
+        dependency "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
+        // log4j
+        dependency "log4j:log4j:${log4jVersion}"
+        // log4j2
+        dependencySet(group:'org.apache.logging.log4j', version: "${log4j2Version}") {
+            entry 'log4j-api'
+            entry 'log4j-core'
+            entry 'log4j-slf4j-impl'
+            entry 'log4j-web'
+            entry 'log4j-slf4j18-impl'
+        }
+        //logback
+        dependencySet(group:'ch.qos.logback', version: "${logbackVersion}") {
+            entry 'logback-core'
+            entry 'logback-classic'
+            entry 'logback-access'
+        }
+
+        dependencySet(group:'com.alibaba.middleware', version: "${dubboMetricsVersion}") {
+            entry 'metrics-core-api'
+            entry 'metrics-core-impl'
+            entry 'metrics-common'
+            entry 'metrics-jvm'
+            entry 'metrics-os'
+            entry 'metrics-tomcat'
+            entry 'metrics-reporter'
+            entry 'metrics-integration'
+        }
+
+        // bytebuddy
+        dependency "net.bytebuddy:byte-buddy:${buddyVersion}"
+        // cglib
+        dependency "cglib:cglib:2.2"
+        dependency "cglib:cglib-nodep:3.2.4"
+
+        //spring framework
+        dependencySet(group:'org.springframework', version: "${springVersion}") {
+            entry 'spring-tx'
+            entry 'spring-context-support'
+            entry 'spring-aop'
+            entry 'spring-context'
+            entry 'spring-core'
+            entry 'spring-beans'
+            entry 'spring-messaging'
+            entry 'spring-webmvc'
+            entry 'spring-web'
+            entry 'spring-jdbc'
+            entry 'spring-oxm'
+            entry 'spring-orm'
+            entry 'spring-aspects'
+            entry 'spring-expression'
+            entry 'spring-test'
+            entry 'spring-jms'
+        }
+
+        //alibaba fastjson
+        dependency "com.alibaba:fastjson:${fastjsonVersion}"
+        //lmax
+        dependency ("com.lmax:disruptor:${disruptorTVersion}"){
+            exclude 'com.google.guava:guava'
+        }
+        //multithread
+        dependency "com.alibaba:multithread.context:${multithreadContextVersion}"
+
+        //commons
+        dependency "commons-configuration:commons-configuration:${commonconfigurationVersion}"
+        dependency "commons-io:commons-io:${commonsIoVersion}"
+        dependency "commons-codec:commons-codec:${commonsCodecVersion}"
+        dependency "org.apache.commons:commons-exec:${commonsExecVersion}"
+        dependency "commons-dbcp:commons-dbcp:${commonsDbcpVersion}"
+        dependency "commons-fileupload:commons-fileupload:${commonsFileuploadVersion}"
+        dependency "commons-logging:commons-logging:${commonsLoggingVersion}"
+        dependency "commons-net:commons-net:${commonNetVersion}"
+        dependency "commons-beanutils:commons-beanutils:${commonsBeansVersion}"
+        dependency "commons-lang:commons-lang:${commonsLangVersion}"
+
+        //apache commons
+        dependency "org.apache.commons:commons-pool2:${commonsPool2Version}"
+        dependency "org.apache.commons:commons-configuration2:${commonsConfiguration2Version}"
+        dependency "org.apache.commons:commons-compress:${commonsCompressVersion}"
+        dependency "org.apache.commons:commons-collections4:${commonscollections4Version}"
+        dependency "org.apache.commons:commons-lang3:${commonsLang3Version}"
+
+        // jax
+        dependency "javax.xml.bind:jaxb-api:${jaxbVersion}"
+        dependency "com.sun.xml.bind:jaxb-impl:${jaxbVersion}"
+        dependency "com.sun.xml.bind:jaxb-core:${jaxbVersion}"
+        dependency "org.glassfish.jaxb:jaxb-runtime:${jaxbVersion}"
+
+        //joda times
+        dependency("joda-time:joda-time:${jodaVersion}")
+
+        //rocketmq
+        dependencySet(group:'org.apache.rocketmq', version: "${rocketmqVersion}") {
+            entry 'rocketmq-client'
+            entry 'rocketmq-namesrv'
+            entry 'rocketmq-broker'
+            entry 'rocketmq-srvutil'
+            entry 'rocketmq-common'
+            entry 'rocketmq-client'
+            entry 'rocketmq-remoting'
+        }
+
+        dependencySet(group:"com.alibaba.csp" ,version:"${sentinelVersion}"){
+            entry 'sentinel-core'
+            entry 'sentinel-datasource-extension'
+            entry 'sentinel-transport-simple-http'
+            entry 'sentinel-transport-common'
+            entry 'sentinel-web-servlet'
+            entry 'sentinel-dashboard'
+            entry 'sentinel-dubbo-adapter'
+            entry 'sentinel-parameter-flow-control'
+            entry 'sentinel-transport'
+            entry 'sentinel-spring-boot-starter'
+            entry 'sentinel-datasource-redis'
+            entry 'sentinel-datasource-nacos'
+        }
+
+        // kryo 序列化
+        dependency "com.esotericsoftware:kryo:${kryoVersion}"
+        dependency "de.javakaffee:kryo-serializers:${kryoSerializersVersion}"
+
+        dependency "de.ruedigermoeller:fst:${fstVersion}"
+        // google json
+        dependency "com.google.code.gson:gson:${gsonVersion}"
+
+        //jackson
+        dependencySet(group:'com.fasterxml.jackson.core', version: "${jackson2Version}") {
+            entry 'jackson-core'
+            entry 'jackson-databind'
+            entry 'jackson-annotations'
+        }
+        dependencySet(group:'com.fasterxml.jackson.dataformat', version: "${jackson2Version}") {
+            entry 'jackson-dataformat-xml'
+            entry 'jackson-dataformat-yaml'
+        }
+        dependencySet(group:'org.codehaus.jackson', version: "${codehausJacksonVersion}") {
+            entry 'jackson-core-asl'
+            entry 'jackson-mapper-asl'
+            entry 'jackson-jaxrs'
+            entry 'jackson-xc'
+        }
+        dependency "com.fasterxml.jackson.module:jackson-module-jsonSchema:${jackson2Version}"
+
+        dependencySet(group:'de.schlichtherle.truezip', version: "${truezipVersion}") {
+            entry 'truezip-driver-zip'
+            entry 'truezip-kernel'
+            entry 'truezip-file'
+        }
+
+        // zipkin
+        dependency "io.zipkin.brave:brave:${braveVersion}"
+        dependency "io.zipkin.brave:brave-core:${braveVersion}"
+        dependency "io.zipkin.brave:brave-http:${braveVersion}"
+        dependency "io.zipkin.brave:brave-okhttp:${braveVersion}"
+        dependency "io.zipkin.brave:brave-web-servlet-filter:${braveVersion}"
+        dependency "io.zipkin.brave:brave-spancollector-http:${braveVersion}"
+        dependency "io.zipkin.brave:brave-core-spring:${braveVersion}"
+
+        dependency "org.reactivestreams:reactive-streams:1.0.2"
+        // projectreactor
+        dependency "io.projectreactor:reactor-core:${projectreactor}"
+        dependency "io.projectreactor.addons:reactor-test:${projectreactor}"
+        dependency "io.projectreactor.addons:reactor-adapter:${projectreactor}"
+        dependency "io.projectreactor.addons:reactor-logback:${projectreactor}"
+        dependency "io.projectreactor.ipc:reactor-ipc:${projectreactorVersion}"
+        dependency "io.projectreactor.ipc:reactor-netty:${projectreactorVersion}"
+
+        //glassfish jersey
+        dependency "org.glassfish.jersey.core:jersey-client:${jerseyVersion}"
+        dependency "org.glassfish.jersey.media:jersey-media-json-jackson:${jerseyVersion}"
+        dependency "org.glassfish.jersey.containers:jersey-container-servlet:${jerseyVersion}"
+        dependency "org.glassfish.jersey.core:jersey-server:${jerseyVersion}"
+        dependency "org.glassfish.jersey.media:jersey-media-multipart:${jerseyVersion}"
+
+        dependency "org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_2.0_spec:${jbossApiSpecVersion}"
+        dependency "org.jboss.spec.javax.batch:jboss-batch-api_1.0_spec:${jbossApiSpecVersion}"
+        dependency "org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:${jbossApiSpecVersion}"
+        dependency "org.jboss.spec.javax.ejb:jboss-ejb-api_3.2_spec:${jbossApiSpecVersion}"
+        dependency "org.jboss.weld.se:weld-se:${weldSeVersion}"
+
+        // dubbo
+        dependency "org.apache.dubbo:dubbo:${dubboVersion}"
+
+        dependency "org.bouncycastle:bcprov-jdk15on:${bcprovJdk15onVersion}"
+        dependency "org.ini4j:ini4j:${ini4jVersion}"
+        dependency "io.lettuce:lettuce-core:${lettuceVersion}"
+        dependency "org.ow2.asm:asm-all:${asmAllVersion}"
+        dependency "org.javassist:javassist:${javassistVersion}"
+        dependency "com.tibico:tibjms:${tibjmsVersion}"
+        dependency "net.sf.supercsv:super-csv:${superCsvVersion}"
+        dependency "io.swagger:swagger-jersey2-jaxrs:${swaggerVersion}"
+
+        // junit
+        dependency("junit:junit:${junitVersion}")
+
+        dependency("javax.servlet:javax.servlet-api:${servletApiVersion}")
+        dependency "javax.inject:javax.inject:1"
+        dependency "javax.jms:jms:1.1"
+        dependency "javax.validation:validation-api:${validationApiVersion}"
+        dependency "javax.el:javax.el-api:2.2.4"
+        dependency "javax.ws.rs:javax.ws.rs-api:2.0"
+        dependency "javax.portlet:portlet-api:2.0"
+        dependency "javax.annotation:javax.annotation-api:1.3.2"
+
+        dependency "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
+        dependency "org.glassfish.web:javax.el:2.2.6"
+
+        dependency "io.netty:netty-all:${netty4Version}"
+        dependency "io.netty:netty:3.10.6.Final"
+
+        dependency "org.freemarker:freemarker:${freemarkerVersion}"
+        dependency "org.codehaus.woodstox:stax2-api:${stax2ApiVersion}"
+
+        dependency "com.squareup.okhttp3:okhttp:${okhttpVersion}"
+        dependency "com.github.rotty3000:jalopy:3000.0.0"
+        dependency "com.github.sgroschupf:zkclient:0.1"
+        dependency "com.ecwid.consul:consul-api:1.2.1"
+        dependency "org.apache.bsf:bsf-api:3.1"
+        dependency "org.easymock:easymock:3.0"
+
+        dependency "io.dropwizard.metrics:metrics-jersey2:${metricsVersion}"
+        dependency "com.ryantenney.metrics:metrics-spring:3.1.3"
+        dependency ("com.ning:async-http-client:${asyncHttpClientVersion}"){
+            exclude 'io.netty:netty'
+        }
+        dependency "org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir:1.1.0"
+        dependency "org.apache.httpcomponents:httpclient:${httpclientVersion}"
+        dependency "com.caucho:hessian:${hessianVersion}"
+        dependency "com.github.briandilley.jsonrpc4j:jsonrpc4j:${jsonrpc4jVersion}"
+
+        dependency "com.facebook.swift:swift-codec:${swiftVersion}"
+        dependency "com.facebook.swift:swift-service:${swiftVersion}"
+
+        dependency "org.mortbay.jetty:jetty:6.1.26"
+        dependency "org.eclipse.jetty.aggregate:jetty-all:${jettyAllVersion}"
+        dependency "org.eclipse.jdt.core.compiler:ecj:4.6.1"
+        // tomcat 9
+        dependency "org.apache.tomcat.embed:tomcat-embed-core:${tomcatEmbedVersion}"
+        dependency "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatEmbedVersion}"
+        dependency "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatEmbedVersion}"
+        dependency "org.apache.tomcat.embed:tomcat-embed-logging-log4j:${tomcatEmbedVersion}"
+        dependency "org.apache.tomcat.embed:tomcat-embed-el:${tomcatEmbedVersion}"
+        dependency "org.apache.tomcat.embed:tomcat-embed-websocket:${tomcatEmbedVersion}"
+        dependency "org.apache.tomcat:tomcat-annotations-api:${tomcatEmbedVersion}"
+
+        dependency "com.github.miwurster:spring-data-influxdb:1.8"
+        dependency "com.google.auto.value:auto-value:${autoValueVersion}"
+
+        // dom4j
+        dependency "xml-apis:xml-apis:1.4.01"
+        dependency "dom4j:dom4j:1.6.1"
+        dependency "xerces:xercesImpl:2.11.0"
+        dependency "com.thoughtworks.xstream:xstream:${xstreamVersion}"
+
+        //database
+        dependency "org.flywaydb:flyway-core:${flywayVersion}"
+        dependency "com.mchange:c3p0:0.9.5.4"
+        dependency "com.alibaba:druid:${druidVersion}"
+        dependency "oracle.jdbc:oracle-jdbc6:12.1.0"
+        dependency "mysql:mysql-connector-java:${mysqlVersion}"
+        dependency "c3p0:c3p0-oracle-thin-extras:0.9.0.2"
+        dependency "org.postgresql:postgresql:${postgresSqlVersion}"
+
+        dependency "com.h2database:h2:1.4.194"
+
+        //expression
+        dependency "org.mvel:mvel2:2.4.0.Final"
+        dependency "antlr:antlr:2.7.6"
+        dependency "com.rabbitmq:amqp-client:5.5.0"
+        dependency "org.springframework.amqp:spring-rabbit:${amqpSpringVersion}"
+        dependency "org.springframework.amqp:spring-amqp:${amqpSpringVersion}"
+        //test
+        dependency "org.hamcrest:hamcrest-all:1.3"
+        dependency "wsdl4j:wsdl4j:1.6.3"
+        //dbcp
+        dependency "org.codehaus.woodstox:woodstox-core-asl:${woodstox4Version}"
+        dependency("org.codehaus.janino:janino:2.6.1")
+
+        dependency("com.thoughtworks.xstream:xstream:${xstreamVersion}")
+        dependency "com.jayway.jsonpath:json-path:2.0.0"
+        dependency "com.goldmansachs:gs-collections:${gsCollectionsVersion}"
+        dependency "org.jvnet.sorcerer:sorcerer-javac:0.8"
+
+        dependency "org.apache.thrift:libthrift:0.8.0"
+        dependency "org.bouncycastle:bcprov-jdk16:1.46"
+        dependency "io.dropwizard.metrics:metrics-core:3.2.5"
+        dependency "com.googlecode.xmemcached:xmemcached:1.3.6"
+        dependency "io.undertow:undertow-servlet:${undertowVersion}"
+        dependency "io.undertow:undertow-core:${undertowVersion}"
+
+        //rest jboss
+        dependency "org.jboss.resteasy:resteasy-jackson-provider:${resteasyVersion}"
+        dependency "org.jboss.resteasy:resteasy-jaxb-provider:${resteasyVersion}"
+        dependency "org.jboss.resteasy:resteasy-netty:${resteasyVersion}"
+        dependency "org.jboss.resteasy:resteasy-jdk-http:${resteasyVersion}"
+        dependency "org.jboss.resteasy:resteasy-undertow:${resteasyVersion}"
+        dependency 'org.apache.sshd:sshd-core:2.2.0'
+
+        //cxf
+        dependency "org.apache.cxf:cxf-rt-frontend-simple:${cxfVersion}"
+        dependency "org.apache.cxf:cxf-rt-transports-http:${cxfVersion}"
+
+        // zookeeper
+        dependency "org.apache.zookeeper:zookeeper:${zookeeperVersion}"
+        // curator
+        dependencySet(group:'org.apache.curator', version: "${curatorVersion}") {
+            entry 'curator-framework'
+            entry 'curator-recipes'
+            entry 'curator-client'
+            entry 'curator-test'
+            entry 'curator-x-discovery-server'
+            entry 'curator-x-discovery'
+        }
+
+        dependency "org.reactivestreams:reactive-streams:${reactiveStreamsVersion}"
+        dependency "io.projectreactor:reactor-core:${reactorCoreVersion}"
+        dependency "io.projectreactor.netty:reactor-netty:${reactorNettyVersion}"
+        dependency "com.zaxxer:HikariCP:3.3.1"
+
+        // nacos
+        dependency "org.apache.dubbo:dubbo-registry-nacos:2.7.2"
+        dependency "com.alibaba.nacos:nacos-api:${nacosVersion}"
+        dependency "com.alibaba.nacos:nacos-client:${nacosVersion}"
+        dependency "com.alibaba.nacos:nacos-spring-context:${nacosSpringContextVersion}"
+        dependency "com.alibaba.boot:nacos-config-spring-boot-starter:${nacosSpringbootVersion}"
+        dependency "org.springframework.cloud:spring-cloud-starter-alibaba-nacos-config:${nacosCloudVersion}"
+
+        // springboot dubbo
+        dependency "org.apache.dubbo:dubbo-spring-boot-autoconfigure:${dubboSpringbootversion}"
+        dependency "org.apache.dubbo:dubbo-spring-boot-starter:${dubboSpringbootversion}"
+
+        dependency "org.apache.commons:com.springsource.org.apache.commons.fileupload:1.2.1"
+        dependency "com.alibaba.fescar:fescar-all:${fescarVersion}"
+        dependency "org.springframework.data:spring-data-redis:${springDataRedisVersion}"
+        dependency "org.springframework.security.oauth:spring-security-oauth2:${springSecurityOauth2Version}"
+        dependency "org.springframework.security:spring-security-jwt:${springSecurityJwtVersion}"
+        dependency "org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:${springsecurityOauth2AutoVersion}"
+        dependency "org.springframework.security:spring-security-core:${springSecurityVersion}"
+
+        dependency "org.aspectj:aspectjweaver:${aspectjVersion}"
+        dependency "org.quartz-scheduler:quartz:${quartzVersion}"
+        dependency "javax.cache:cache-api:${cacheApiVersion}"
+        dependency "org.codehaus.janino:janino:${janinoVersion}"
+
+        // spring cloud
+        dependency "org.springframework.cloud:spring-cloud-context:${springCloudVersion}"
+        dependency "org.springframework.cloud:spring-cloud-commons:${springCloudVersion}"
+
+/***********************************************************************************************************************/
+
+        resolutionStrategy {
+            cacheChangingModulesFor 0, 'seconds'
+        }
+        applyMavenExclusions = false
+    }
+}
+

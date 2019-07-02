@@ -1,0 +1,191 @@
+apply plugin: "io.spring.dependency-management"
+
+def devProp = file("${quicksand_sdk_home}/dependencies/dev.properties")
+
+Properties p = new Properties()
+
+devProp.withInputStream { stream->
+    p.load(stream)
+}
+
+p.keySet().forEach{ it->
+    ext.set(it, p.getProperty(it))
+};
+
+dependencyManagement {
+    dependencies {
+
+/***************************************** Develop by oneself library **************************************************/
+        dependency "com.apsaras.framework.vfs:Apsaras-vfs:${vfsVersion}"
+        dependency "com.apsaras.framework.supervisor:apsaras-supervisor:${supervisorVersion}"
+
+        //framework.amc
+        dependencySet(group:'com.apsaras.framework.amc', version: "${amcVersion}") {
+            entry 'apsaras-amc-base'
+            entry 'apsaras-amc-core'
+            entry 'apsaras-amc-utils'
+            entry 'apsaras-amc-core-ext'
+            entry 'apsaras-amc-loaders'
+        }
+
+        //database
+        dependencySet(group:"com.apsaras.framework.repository",version:"${apoVersion}"){
+            entry 'Apsaras-repository-jdbc'
+            entry 'Apsaras-repository-starter'
+        }
+
+        dependencySet(group:"com.apsaras.framework.batch",version:"${batchVersion}"){
+            entry 'Apsaras-batch-api'
+            entry 'Apsaras-batch-runtime'
+        }
+
+        dependencySet(group:"com.apsaras.platform.gateway",version:"${gatewayVersion}"){
+            entry 'apsaras-oidc-api'
+            entry 'apsaras-oidc-core'
+            entry 'apsaras-oidc-standalone'
+        }
+
+        dependencySet(group:"com.apsaras.framework.job",version:"${jobVersion}"){
+            entry 'Apsaras-job-api'
+            entry 'Apsaras-job-core'
+            entry 'Apsaras-job-executor-sample'
+            entry 'Apsaras-job-scheduler'
+        }
+
+        dependencySet(group:"com.apsaras.framework.document",version:"${documentVersion}"){
+            entry 'Apsaras-doc-api'
+            entry 'Apsaras-doc-builder'
+            entry 'Apsaras-doc-spi'
+        }
+
+        dependencySet(group:"com.apsaras.framework.extras",version:"${extrasVersion}"){
+            entry 'apsaras-extras-api'
+            entry 'apsaras-extras-common'
+            entry 'apsaras-extras-core'
+            entry 'apsaras-extras-decoder'
+            entry 'apsaras-extras-encoder'
+            entry 'apsaras-extras-main'
+        }
+
+        dependencySet(group:"com.apsaras.framework.messaging",version:"${messagingVersion}"){
+            entry 'Apsaras-messaging-core'
+            entry 'Apsaras-messaging-rocketmq'
+            entry 'Apsaras-messaging-tibco'
+            entry 'Apsaras-messaging-rabbitmq'
+        }
+
+        dependencySet(group:'com.apsaras.pas.trandata', version: "${trandataVersion}") {
+            entry 'pas-trandata-api'
+            entry 'pas-trandata-Interceptor'
+            entry 'pas-trandata-service'
+            entry 'pas-trandata-transport-common'
+            entry 'pas-trandata-transport-default'
+            entry 'pas-trandata-transport-dubbo'
+        }
+
+        dependencySet(group:"com.apsaras.platform.elastic", version:"${agentVersion}"){
+            entry 'Apsaras-elastic-agent-monitor-plugin'
+            entry 'Apsras-elastic-agent'
+            entry 'Apsras-elastic-agent-common'
+        }
+
+        dependencySet(group:"com.apsaras.pas.trandata", version:"${trandataCollectorVersion}"){
+            entry 'pas-trans-collector'
+            entry 'pas-trans-collector-common'
+            entry 'pas-trans-collector-repository'
+            entry 'pas-trans-collector-service'
+            entry 'pas-trans-gateway'
+        }
+
+        dependencySet(group:"com.apsaras.pas.metrics", version:"${metricsTransportVersion}"){
+            entry 'pas-lookout-api'
+            entry 'pas-lookout-service'
+            entry 'pas-lookout-dubbo-handler'
+            entry 'pas-lookout-rocketmq-handler'
+            entry 'pas-metrics-dubbo-reporter'
+            entry 'pas-metrics-rcoketmq-reporter'
+            entry 'pas-metrics-transport-api'
+        }
+
+        //crypto SM support
+        dependency "com.apsaras.pas.core:Apsaras-pas-core:${pasCoreVersion}"
+        dependency "com.apsaras.pas.core:Apsaras-pas-support:${pasCoreVersion}"
+        dependency "com.apsaras.ar:module-protocol:${moduleProtocolVersion}"
+
+        // log sync to nacos
+        dependency("com.apsaras.pas.logger:apsaras-logger-api:${pasLoggerVersion}")
+        dependency("com.apsaras.pas.logger:apsaras-logger-starter:${pasLoggerVersion}")
+
+        dependency "com.apsaras.framework.crypto:Apsaras-crypto-common:${cryptoVersion}"
+        dependency "com.apsaras.framework.crypto:Apsaras-crypto-service:${cryptoVersion}"
+        dependency "com.apsaras.framework.crypto:Apsaras-crypto-sm:${cryptoVersion}"
+        dependency "com.apsaras.framework.client:apsaras-http-client:${clientApiVersion}"
+        dependency "com.apsaras.framework.hsf:apsaras-dubbo-plus:${hsfVersion}"
+        dependency "com.apsaras.framework.boot:apsaras-bootstarp:${bootContainerVersion}"
+        dependency "com.apsaras.framework.pool:apsaras-pool:${poolVersion}"
+        dependency "com.apsaras.framework.pool:apsaras-pool-autoconfigure-starter:${poolVersion}"
+        dependency "com.apsaras.framework.sentinel:apsaras-sentinel-nacos-starter:${sentinelExtVersion}"
+        dependency "com.apsaras.framework.sentinel:Apsaras-sentinel-dubbo-adapter:${adapterVersion}"
+        dependency "com.apsaras.framework.plugin:apsaras-plugin-core:${pluginCoreVersion}"
+        dependency "com.apsaras.framework.disruptor:apsaras-disruptor-core:${disruptorVersion}"
+        dependency "com.apsaras.framework.base:apsaras-base:${baseVersion}"
+        dependency "com.apsaras.framework.configure:apsaras-configure-starter:${cmfBasicVersion}"
+        dependency "com.apsaras.framework.file:Apsaras-file-transporter:${fileTransportVersion}"
+        dependency ("com.apsaras.framework.i18n:apsaras-i18n-language:${i18nVersion}")
+
+        dependency "com.apsaras.platform.component:cmf-app-api:${cmfAppVersion}"
+        dependency "com.apsaras.platform.component:cmf-sentinel-api:${cmfAppVersion}"
+        dependency "com.apsaras.platform.component:cmf-sentinel:${cmfAppVersion}"
+        dependency "com.apsaras.platform.component:cmf-app:${cmfAppVersion}"
+        dependency "com.apsaras.platform.component:cmf-redis-api:${cmfAppVersion}"
+        dependency "com.apsaras.platform.component:cmf-redis-service:${cmfAppVersion}"
+        dependency "com.apsaras.platform.component:cmf-registry-api:${cmfAppVersion}"
+        dependency "com.apsaras.platform.component:cmf-registry-service:${cmfAppVersion}"
+
+        dependency "com.apsaras.platform.component:cmf-database-api:${cmfAppVersion}"
+        dependency "com.apsaras.platform.component:cmf-database-service:${cmfAppVersion}"
+
+        dependency "com.apsaras.platform.component:cmf-rocketmq-api:${cmfAppVersion}"
+        dependency "com.apsaras.platform.component:cmf-rocketmq-service:${cmfAppVersion}"
+
+        dependency "com.apsaras.platform.component:cmf-resource-api:${cmfAppVersion}"
+        dependency "com.apsaras.platform.component:cmf-resource-service:${cmfAppVersion}"
+
+        dependency "com.apsaras.platform.component:cmf-dashboard-api:${cmfAppVersion}"
+        dependency "com.apsaras.platform.component:cmf-app-standlone:${cmfAppVersion}"
+
+        dependency "com.apsaras.platform.component:cmf-governance-api:${cmfGovernanceVersion}"
+        dependency "com.apsaras.platform.component:cmf-governance-service:${cmfGovernanceVersion}"
+
+        dependency "com.apsaras.platform.component:cmf-file-api:${cmfFileVersion}"
+        dependency "com.apsaras.platform.component:cmf-file-service:${cmfFileVersion}"
+
+        dependency "com.apsaras.platform.component:cmf-platform-api:${cmfPlatformVersion}"
+        dependency "com.apsaras.platform.component:cmf-platform-service:${cmfPlatformVersion}"
+
+        dependency "com.apsaras.platform.component:cmf-monitor-api:${cmfMonitorVersion}"
+        dependency "com.apsaras.platform.component:cmf-monitor:${cmfMonitorVersion}"
+        dependency "com.apsaras.platform.component:cmf-batch-service:${cmfBatchVersion}"
+
+        dependency "com.apsaras.platform.component:cmf-apiManager-api:${cmfApiManagerVersion}"
+        dependency "com.apsaras.platform.component:cmf-apiManager-service:${cmfApiManagerVersion}"
+
+        dependency ("com.apsaras.platform.gateway:apsaras-gateway-fabric:${gatewayVersion}")
+        dependency ("com.apsaras.platform.gateway:apsaras-gateway-api:${gatewayVersion}")
+        dependency ("com.apsaras.platform.gateway:apsaras-gateway-mertics:${gatewayVersion}")
+
+        dependency ("com.apsaras.platform.service:eop-api:${eopVersion}")
+        dependency ("com.apsaras.platform.service:eop-service:${eopVersion}")
+
+        dependency("com.apsaras.pandora:apsaras-pandora-common:${pandoraVersion}")
+        dependency("com.apsaras.pandora:apsaras-pandora-utils:${pandoraVersion}")
+        dependency("com.apsaras.pandora:apsaras-pandora-core:${pandoraVersion}")
+
+/***********************************************************************************************************************/
+        resolutionStrategy {
+            cacheChangingModulesFor 0, 'seconds'
+        }
+        applyMavenExclusions = false
+    }
+}
+

@@ -17,7 +17,7 @@ configure(globalSetting) { project ->
     ext.gradleScriptDir   = "${quicksand_sdk_home}/gradle"
 
     // import other plugins
-    apply from: "${gradleScriptDir}/dependency-management.gradle"
+    apply from: "${gradleScriptDir}/dependency-thirdparty.gradle"
     apply from: "${gradleScriptDir}/sniffer.gradle"
     apply from: "${gradleScriptDir}/allprojects.gradle"
 
@@ -27,15 +27,13 @@ apply from: System.getenv().get("QUICKSAND_SDK_HOME")+"/gradle/subproject.gradle
 
 configure(rootProject) {
     description = "Gradle Global Setting"
-
     apply plugin: "groovy"
     // apply plugin: "detect-split-packages"
-    apply from: "${gradleScriptDir}/jdiff.gradle"
-    apply from: "${gradleScriptDir}/docs.gradle"
+    // apply from: "${gradleScriptDir}/jdiff.gradle"
+    // apply from: "${gradleScriptDir}/docs.gradle"
     apply from: "${gradleScriptDir}/wapper.gradle"
 
     configurations.archives.artifacts.clear()
-
     artifacts {
         archives docsZip
         archives distZip
