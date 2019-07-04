@@ -53,7 +53,7 @@ configure(subprojects) { subproject ->
         // Manifest-Version: 用来定义manifest文件的版本
         manifest.attributes["Manifest-Version"] = "1.0"
         // Created-By: 声明该文件的生成者，一般该属性是由jar命令行工具生成的
-        manifest.attributes["Created-By"] = "${System.getProperty("gradle.version")}"
+        manifest.attributes["Created-By"] = "${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
         // Implementation-Title: 定义了扩展实现的标题
         manifest.attributes["Implementation-Title"] = subproject.name
         // Implementation-Version: 定义扩展实现的版本
