@@ -1,7 +1,8 @@
 import java.text.SimpleDateFormat;
 
 configure(subprojects) { subproject ->
-    apply from: "${quicksand_sdk_home}/gradle/publish-maven.gradle"
+    apply from: "${quicksand_sdk_home}/gradles/publish-maven.gradle"
+    
     configurations {
         jacoco
     }
@@ -11,7 +12,7 @@ configure(subprojects) { subproject ->
 
     gradle.taskGraph.whenReady {taskGraph ->
         if (taskGraph.hasTask(':sonarqube')) {
-            test.jvmArgs "-javaagent:${configurations.jacoco.asPath}=destfile=${buildDir}/jacoco.exec,includes=org.quicksand.*"
+            test.jvmArgs "-javaagent:${configurations.jacoco.asPath}=destfile=${buildDir}/jacoco.exec,includes=com.apsaras.*"
         }
     }
 
@@ -19,7 +20,8 @@ configure(subprojects) { subproject ->
         doFirst {
             def manifestFile = file("src/main/resources/version.properties")
             Properties versionFile = new Properties()
-            if (versionFile.exists()) {
+	        
+            if (manifestFile.exists()) {
                 manifestFile.withInputStream { stream->
                     versionFile.load(stream)
                 }
@@ -27,20 +29,23 @@ configure(subprojects) { subproject ->
             }else{
                 versionFile.put("build.number","0")
             }
-            def date=new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
+            
+            def date = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
             def buildNumber = versionFile.get("build.number")
             def nextbuildNumber = Integer.parseInt(buildNumber)+ 1
+            
             versionFile.put("build.number",String.valueOf(nextbuildNumber))
-            versionFile.put("build.version", subproject.version)
+            versionFile.put("build.version", String.valueOf(subproject.version))
             versionFile.put("system.timestamp",String.valueOf(System.currentTimeMillis()))
-            versionFile.put("build.timestamp",date)
-            versionFile.put("build.timestamp.format", "yyyyMMddHHmmssSSS")
-            versionFile.put("module.name", subproject.name)
-
+            versionFile.put("build.timestamp",String.valueOf(date))
+            versionFile.put("build.timestamp.format", String.valueOf("yyyyMMddHHmmssSSS"))
+            versionFile.put("module.name", String.valueOf(subproject.name))
+            
             if (!manifestFile.exists()){
                 manifestFile.getParentFile().mkdirs()
                 manifestFile.createNewFile()
             }
+            
             versionFile.store(new FileOutputStream(manifestFile),"Inverse Quicksand Platform Build Tools Versioned File");
         }
 

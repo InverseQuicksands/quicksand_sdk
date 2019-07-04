@@ -3,7 +3,11 @@
 //configure(allprojects.findAll { it.name.startsWith('sub') }) {}
 // 如何使用Gradle创建如maven那样的项目结构呢 ？
 
-configure(globalSetting) { project ->
+ext {
+    moduleProjects = subprojects
+}
+
+configure(allprojects) { project ->
     group = "${groupName}"
     version = "${version}"
 
@@ -12,25 +16,25 @@ configure(globalSetting) { project ->
     // Repostiroy Config Dirct
     ext.set("repo_user",System.getenv().get("REPOSITORY_USER"));
     ext.set("repo_password",System.getenv().get("REPOSITORY_PASSWORD"));
-    ext.set("repo_local",System.getenv().get("REPOSITORY_LOCAL"));
+    ext.set("repo_local",System.getenv().get("REPOSITORY_LIB"));
     // ext.set("repository_lib",System.getenv().get("REPOSITORY_LIB"));
-    ext.gradleScriptDir   = "${quicksand_sdk_home}/gradle"
+    ext.gradleScriptDir   = "${quicksand_sdk_home}/gradles"
 
     // import other plugins
     apply from: "${gradleScriptDir}/dependency-thirdparty.gradle"
-    apply from: "${gradleScriptDir}/sniffer.gradle"
     apply from: "${gradleScriptDir}/allprojects.gradle"
 
 }
 
-apply from: System.getenv().get("QUICKSAND_SDK_HOME")+"/gradle/subproject.gradle"
+apply from: System.getenv().get("QUICKSAND_SDK_HOME")+"/gradles/subproject.gradle"
 
 configure(rootProject) {
     description = "Gradle Global Setting"
     apply plugin: "groovy"
     // apply plugin: "detect-split-packages"
     // apply from: "${gradleScriptDir}/jdiff.gradle"
-    // apply from: "${gradleScriptDir}/docs.gradle"
+    // 编译doc文档，必须项目有类
+    apply from: "${gradleScriptDir}/docs.gradle"
     apply from: "${gradleScriptDir}/wapper.gradle"
 
     configurations.archives.artifacts.clear()

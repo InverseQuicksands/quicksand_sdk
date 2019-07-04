@@ -1,4 +1,4 @@
-task wrapper(type: Wrapper) {
+task wrappers(type: Wrapper) {
         description = "Generates gradlew[.bat] scripts"
         gradleVersion = '5.5'
 

@@ -7,7 +7,9 @@ apply plugin: "idea"
 //apply plugin: 'org.springframework.boot'
 
 repositories {
-    maven { url "${repo_local}" }
+      maven { url "http://repo.spring.io/plugins-release"}
+      mavenCentral()
+   // jcenter()
 }
 
 compileJava {
@@ -22,8 +24,7 @@ compileTestJava {
 }
 
 [compileJava, compileTestJava]*.options*.encoding="UTF-8"
-sourceSets.main.java.srcDirs = "src/java"
-sourceSets.main.resources.srcDirs = "src/resources"
+sourceSets.main.resources.srcDirs = ["src/main/java", "src/main/resources"]
 //sourceSets.test.resources.srcDirs = ["src/test/resources", "src/test/java"]
 
 

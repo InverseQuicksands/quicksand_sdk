@@ -1,6 +1,6 @@
 apply plugin: "io.spring.dependency-management"
 
-def thirdparyProp = file("${quicksand_sdk_home}/dependencies/thirdpary.properties")
+def thirdparyProp = file("${quicksand_sdk_home}/dependencies/thirdparty.properties")
 
 Properties p = new Properties()
 
