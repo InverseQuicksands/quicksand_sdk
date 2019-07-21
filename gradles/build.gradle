@@ -26,59 +26,53 @@ buildscript {
 apply from: System.getenv().get("QUICKSAND_SDK_HOME") + "/gradles/globalSetting.gradle"
 
 
-project("aui-model") {
-    description = 'aui-model Database Model'
-
+project("") {
+    description = ''
+    
     dependencies {
 
     }
 }
 
 
-project("aui-common") {
-    description = 'aui-common'
+project("") {
+    description = ''
 
     dependencies {
-        compile project(":aui-model")
-        compile("org.apache.poi:poi:3.16")
+        compile project(":")
     }
 }
 
 
-project("aui-endpoint") {
+project("") {
     apply plugin: 'org.springframework.boot'
 
-    description = 'aui-endPoint   RestFul Service  Endpoint Impl Facade ServiceImpl '
+    description = ''
+    
     dependencies {
-        compile project(":aui-model")
-        compile project(":aui-common")
-        compile project(":aui-application")
-        compile("io.swagger:swagger-jersey2-jaxrs")
-        compile('org.springframework.boot:spring-boot-starter-actuator')
-        compile('org.springframework.boot:spring-boot-starter-web')
         compile('org.springframework.boot:spring-boot-configuration-processor')
         testCompile('org.springframework.boot:spring-boot-starter-test')
     }
 }
 
 
-project("aui-bootstrap") {
+project("") {
     apply plugin: 'org.springframework.boot'
 
-    description = 'aui-bootstarp manager RestFul Service boot loader '
+    description = ''
+    
     dependencies {
-        compile("mysql:mysql-connector-java:8.0.13")
-        compile("org.postgresql:postgresql")
+       
     }
 }
 
 
-project("aui-application") {
+project("") {
 
-    description = 'aui-application  business module ,Domain Business Impl '
+    description = ''
+
     dependencies {
-        compile("com.alibaba:fastjson")
-        compile("org.apache.commons:commons-lang3")
+        
     }
 }
 
