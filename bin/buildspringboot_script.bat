@@ -6,4 +6,4 @@
 @rem springboot 2.x版本打成war包命令
 @rem gradlew.bat clean build -x test -x bootWar
 
-%QUICKSAND_SDK_HOME%/gradlew.bat clean build -x test -x bootJar
+%QUICKSAND_SDK_HOME%\bin\gradlew.bat clean build -x test -x bootJar

@@ -1,4 +1,4 @@
 @echo off
 @rem ±‡“ÎœÓƒø
 call %QUICKSAND_SDK_HOME%/bin/common.bat
-%QUICKSAND_SDK_HOME%/gradlew.bat cleanidea idea
+%QUICKSAND_SDK_HOME%/bin/gradlew.bat cleanidea idea

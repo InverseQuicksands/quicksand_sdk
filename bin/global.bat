@@ -180,7 +180,7 @@ goto :eof
     md %2 & cd /d %2
     set propath=%cd%
     @rem ¹¹½¨gradle£¬Ö´ÐÐgradle init
-    call create_project.bat %projectname%
+    call createproject_script.bat %projectname%
 goto :eof
 
 
