@@ -1,5 +1,5 @@
 @echo off
 
-@rem 涓婁紶椤圭洰jar鍖呰嚦maven浠撳簱
+@rem 上传项目jar包至maven仓库
 call %QUICKSAND_SDK_HOME%/bin/common.bat
 %QUICKSAND_SDK_HOME%/bin/gradlew.bat clean build uploadArchives -x test -x bootJar
