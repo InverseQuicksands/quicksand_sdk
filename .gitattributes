@@ -1,2 +1,2 @@
 *.gradle linguist-language=gradle
-*.bat linguist-language=bat
+*.bat linguist-language=gradle
