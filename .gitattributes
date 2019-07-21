@@ -1,5 +1,5 @@
-*.gradle linguist-language=gradle
-*.bat linguist-language=gradle
 *.js linguist-language=gradle
 *.css linguist-language=gradle
 *.html linguist-language=gradle  
+*.gradle linguist-language=gradle
+*.bat linguist-language=bat
