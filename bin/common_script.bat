@@ -11,5 +11,5 @@ set GRADLE_OPTS=-Dfile.encoding=UTF-8
 set buildGradleVersion=2.1.0
 
 set REPOSITORY_USER=admin
-set REPOSITORY_PASSWORD=admin123
-set REPOSITORY_LIB=http://xxx/repository/maven-releases/
+set REPOSITORY_PASSWORD=zhang232625
+set REPOSITORY_LIB=http://39.96.203.141:8081/repository/maven-releases/
