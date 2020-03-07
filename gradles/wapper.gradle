@@ -1,6 +1,6 @@
 task wrappers(type: Wrapper) {
         description = "Generates gradlew[.bat] scripts"
-        gradleVersion = '5.5'
+        gradleVersion = '6.2.2'
 
         doLast() {
             def gradleOpts = "-XX:MaxMetaspaceSize=1024m -Xmx1024m"
