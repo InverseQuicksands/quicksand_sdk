@@ -7,4 +7,4 @@
 @rem gradlew.bat clean build -x test -x bootWar
 @rem %QUICKSAND_SDK_HOME%/bin/gradlew.bat clean build -x test -x bootJar
 
-%QUICKSAND_SDK_HOME%/bin/gradlew.bat clean build -x test -x bootRepackage
+%QUICKSAND_SDK_HOME%/gradlew.bat clean build -x test -x bootRepackage
