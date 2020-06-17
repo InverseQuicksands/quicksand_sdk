@@ -7,9 +7,7 @@ apply plugin: "idea"
 //apply plugin: 'org.springframework.boot'
 
 repositories {
-      maven { url "http://repo.spring.io/plugins-release"}
-      mavenCentral()
-   // jcenter()
+      maven { url "xxx"} 
 }
 
 compileJava {

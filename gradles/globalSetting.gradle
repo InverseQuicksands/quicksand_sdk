@@ -13,6 +13,7 @@ configure(allprojects) { project ->
 
     // Global settting Directory use
     ext.set("quicksand_sdk_home",System.getenv().get("QUICKSAND_SDK_HOME"));
+    
     // Repostiroy Config Dirct
     ext.set("repo_user",System.getenv().get("REPOSITORY_USER"));
     ext.set("repo_password",System.getenv().get("REPOSITORY_PASSWORD"));
